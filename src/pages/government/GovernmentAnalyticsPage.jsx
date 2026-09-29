@@ -9,7 +9,8 @@ import {
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-  PieChart as RePieChart, Pie, Cell, Legend
+  PieChart as RePieChart, Pie, Cell, Legend,
+  LineChart, Line, AreaChart, Area
 } from 'recharts';
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
@@ -82,7 +83,8 @@ export default function GovernmentAnalyticsPage() {
             { id: 'providers', label: '2. Provider Accountability', icon: Building2 },
             { id: 'districts', label: '3. District Geographic Heatmap', icon: MapPin },
             { id: 'demographics', label: '4. Demographics & Inclusivity', icon: Users },
-            { id: 'skillgaps', label: '5. Skill Gaps & Attrition Causes', icon: AlertTriangle }
+            { id: 'skillgaps', label: '5. Skill Gaps & Attrition Causes', icon: AlertTriangle },
+            { id: 'impact', label: '6. SIH26135 Skilling Impact & ROI', icon: TrendingUp }
           ].map(tab => {
             const Icon = tab.icon;
             return (
@@ -509,6 +511,179 @@ export default function GovernmentAnalyticsPage() {
                               >
                                 Trigger Remediation
                               </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 6: SIH26135 SKILLING IMPACT & OUTCOME ROI */}
+            {activeTab === 'impact' && (
+              <div className="space-y-6">
+                {/* Top Macro Impact KPIs */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="p-5 rounded-3xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white shadow-xl border border-slate-800 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none" />
+                    <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400 block">
+                      State Skilling Economic ROI
+                    </span>
+                    <p className="text-3xl font-black mt-2 text-white">3.9x</p>
+                    <p className="text-[11px] text-slate-300 mt-1">₹1 Govt Spend = ₹3.90 Direct Economic Return</p>
+                  </div>
+
+                  <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase text-slate-400 block">Average 12M Wage Growth</span>
+                      <p className="text-2xl font-black text-emerald-600 mt-1">+64.8%</p>
+                    </div>
+                    <p className="text-[11px] text-slate-500 mt-2">Baseline ₹16.5k → ₹27.2k Average Post 12 Months</p>
+                  </div>
+
+                  <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase text-slate-400 block">1-Year Employment Retention</span>
+                      <p className="text-2xl font-black text-blue-600 mt-1">87.4%</p>
+                    </div>
+                    <p className="text-[11px] text-slate-500 mt-2">Validated via Dual Candidate + Employer Sign-off</p>
+                  </div>
+
+                  <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase text-slate-400 block">Ghost Placement Prevention</span>
+                      <p className="text-2xl font-black text-purple-600 mt-1">99.4%</p>
+                    </div>
+                    <p className="text-[11px] text-slate-500 mt-2">Unverified claims masked until employer confirmation</p>
+                  </div>
+                </div>
+
+                {/* Longitudinal Wage Progression Chart */}
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                        Evidence-Based Longitudinal Trajectory
+                      </span>
+                      <h2 className="text-base font-black text-slate-900 mt-1">
+                        Wage Progression: MahaSkill Certified Trainees vs Non-Skilled Baseline (₹/Month)
+                      </h2>
+                      <p className="text-xs text-slate-500">
+                        Tracks trainees across 0M (Placement), 6M, 12M, 24M, and 36M milestones
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs font-bold">
+                      <span className="flex items-center gap-1.5 text-emerald-700">
+                        <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" /> MahaSkill Verified Trainees
+                      </span>
+                      <span className="flex items-center gap-1.5 text-slate-400">
+                        <span className="w-3 h-3 rounded-full bg-slate-300 inline-block" /> Non-Skilled Market Average
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="w-full h-72">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={[
+                          { milestone: 'Enrolment', verifiedTrainee: 12000, marketBaseline: 10500 },
+                          { milestone: 'Placement (0M)', verifiedTrainee: 18500, marketBaseline: 12000 },
+                          { milestone: '6 Months', verifiedTrainee: 22800, marketBaseline: 13000 },
+                          { milestone: '12 Months', verifiedTrainee: 28500, marketBaseline: 14200 },
+                          { milestone: '24 Months', verifiedTrainee: 36200, marketBaseline: 15800 },
+                          { milestone: '36 Months', verifiedTrainee: 44000, marketBaseline: 17500 }
+                        ]}
+                      >
+                        <defs>
+                          <linearGradient id="gradVerified" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                          </linearGradient>
+                          <linearGradient id="gradBaseline" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.2} />
+                            <stop offset="95%" stopColor="#94a3b8" stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                        <XAxis dataKey="milestone" tick={{ fontSize: 11, fontWeight: 700, fill: '#64748b' }} />
+                        <YAxis tickFormatter={(val) => `₹${val / 1000}k`} tick={{ fontSize: 11, fill: '#64748b' }} />
+                        <Tooltip
+                          formatter={(value) => [`₹${value.toLocaleString()}`, 'Monthly Income']}
+                          contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', color: '#fff', fontSize: '12px' }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="verifiedTrainee"
+                          name="MahaSkill Certified"
+                          stroke="#10b981"
+                          strokeWidth={3}
+                          fillOpacity={1}
+                          fill="url(#gradVerified)"
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="marketBaseline"
+                          name="Non-Skilled Market Baseline"
+                          stroke="#94a3b8"
+                          strokeWidth={2}
+                          strokeDasharray="4 4"
+                          fillOpacity={1}
+                          fill="url(#gradBaseline)"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Sector-Wise Retention & Skill Impact Table */}
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                  <div className="border-b border-slate-100 pb-3">
+                    <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-purple-600" /> Sector-Wise Placement Retention &amp; Progression Matrix
+                    </h2>
+                    <p className="text-xs text-slate-500">
+                      Evaluates training impact across core high-growth Maharashtra industrial sectors
+                    </p>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 text-slate-600 font-extrabold border-b border-slate-200">
+                          <th className="p-3">Industrial Sector</th>
+                          <th className="p-3">Trainees Placed</th>
+                          <th className="p-3">6-Month Retention</th>
+                          <th className="p-3">12-Month Retention</th>
+                          <th className="p-3">Avg 12M Wage</th>
+                          <th className="p-3">Skill Gap Resolution</th>
+                          <th className="p-3 text-right">Impact Grade</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                        {[
+                          { sector: 'Automotive & Electric Vehicles (EV)', placed: '1,420', ret6: '92.4%', ret12: '88.1%', avgWage: '₹32,500', gapRes: '91%', grade: 'A+' },
+                          { sector: 'IT, Cloud & Software Engineering', placed: '2,150', ret6: '94.0%', ret12: '91.2%', avgWage: '₹41,800', gapRes: '94%', grade: 'A+' },
+                          { sector: 'Renewable Energy & Rooftop Solar', placed: '890', ret6: '87.5%', ret12: '84.0%', avgWage: '₹28,600', gapRes: '86%', grade: 'A' },
+                          { sector: 'Healthcare & Emergency Care', placed: '740', ret6: '91.0%', ret12: '89.4%', avgWage: '₹26,400', gapRes: '89%', grade: 'A' },
+                          { sector: 'Precision Manufacturing & CNC', placed: '1,120', ret6: '88.2%', ret12: '85.6%', avgWage: '₹27,800', gapRes: '88%', grade: 'A' },
+                        ].map((row) => (
+                          <tr key={row.sector} className="hover:bg-slate-50 transition">
+                            <td className="p-3 font-bold text-slate-900">{row.sector}</td>
+                            <td className="p-3 font-semibold text-slate-700">{row.placed}</td>
+                            <td className="p-3 font-bold text-emerald-700">{row.ret6}</td>
+                            <td className="p-3 font-bold text-emerald-800">{row.ret12}</td>
+                            <td className="p-3 font-mono font-bold text-slate-900">{row.avgWage}</td>
+                            <td className="p-3">
+                              <span className="bg-purple-50 text-purple-800 font-extrabold text-[10px] px-2 py-0.5 rounded border border-purple-200">
+                                {row.gapRes} Closed
+                              </span>
+                            </td>
+                            <td className="p-3 text-right">
+                              <span className="bg-emerald-600 text-white font-black text-[10px] px-2.5 py-1 rounded-md shadow-xs">
+                                {row.grade}
+                              </span>
                             </td>
                           </tr>
                         ))}
